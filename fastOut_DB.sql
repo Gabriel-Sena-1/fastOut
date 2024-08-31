@@ -12,9 +12,10 @@ CREATE TABLE usuarios (
 );
 
 -- Tabela de Grupos (Natureza do gasto)
+-- cadastro previo: contas, lazer, economias
 CREATE TABLE grupos (
     id_grupo INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL
+    nome VARCHAR(100) NOT NULL 
 );
 
 -- Tabela de Gastos
