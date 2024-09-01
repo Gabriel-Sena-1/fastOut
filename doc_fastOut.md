@@ -42,6 +42,11 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
         id_gasto: vinculo
 ```
 
+```
+tabela usuario grupo -> limitar quantidade de grupos criáveis para 3-4 
+```
+
+
 - Gasto:
     - Descrição: o gasto em específico, exemplo: conta de luz, festa x, lanche, tv...
 
