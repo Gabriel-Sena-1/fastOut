@@ -1,17 +1,21 @@
+import json
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 router = APIRouter()
 
 class Request(BaseModel):
-    image_id: int
-    correct_classification: str
+    id_grupo: int
     
 @router.get("/grupo")
-def func1()->str:
-    return "essa eh a funcao 1"
+def retornaTodosGrupos()->json:
+    value = {}
+    #TODO: acumula todos os grupos em value
+    return json.dumps(value) #? retorna os grupos em json
 
 @router.get("/grupo/{id_grupo}")
-def func2()->str:
-    return "essa eh a funcao 2"
+def retornaUmGrupo()->json:
+    value = {}
+    #TODO: acumula um grupo em value
+    return json.dumps(value) #? retorna os grupos em json
 

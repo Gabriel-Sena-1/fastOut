@@ -1,17 +1,24 @@
+import json
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 router = APIRouter()
 
 class Request(BaseModel):
-    image_id: int
-    correct_classification: str
+    id_grupo: int
+    id_gasto: str
     
 @router.get("/grupo/{id_grupo}/gasto")
-def func1()->str:
-    return "essa eh a funcao 1"
+def exibeTodosGastos()->json:
+    value = {}
+    #! faz uma chamada de select nos gastos
+    #! acumula e armazena em uma variável
+    return json.dumps(value)
 
 @router.get("/grupo/{id_grupo}/gasto/{id_gasto}")
-def func2()->str:
-    return "essa eh a funcao 2"
+def exibeUmGasto()->json:
+    value = {}
+    #! faz uma chamada de select no gasto especifico
+    #! acumula e armazena em uma variável
+    return json.dumps(value)
 
