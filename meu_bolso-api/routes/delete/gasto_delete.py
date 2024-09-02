@@ -1,13 +1,16 @@
+import json
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
 router = APIRouter()
 
 class Request(BaseModel):
-    image_id: int
-    correct_classification: str
+    grupo_id: int
+    gasto_id: int
 
 @router.delete("/grupo/{grupo_id}/gasto/{gasto_id}")
-def func4()->str:
-    return "essa eh a funcao 4"
+def deletaGasto()->str:
+    value = {"message": 'sucess'} # ? -> faz a transação e de acordo com o retorno muda a mensagem
+    #! começa uma transaction com o banco e deleta o conteúdo
+    return json.dumps(value)
 
