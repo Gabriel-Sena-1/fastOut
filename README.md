@@ -26,6 +26,8 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
         - sobrenome: varchar 100
         - email: varchar 200
         - senha: varchar 100
+        - tipo_usuario: int --? 1- usuario normal; 2- usuario premium; 3- admin;
+        - grupos: int --? controla a qtd de grupos de um unico usuario -> essa qtd vai ser validada pelo tipo daquele usuario
 ```
 - Grupo:
     - Descrição: Natureza do gasto, exemplo: contas, lazer, comida, festa...
