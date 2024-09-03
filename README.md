@@ -6,7 +6,7 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
 
 # System Design
     > HTML, Tailwind CSS, JS        -> Front-end
-        > VueJS
+        > VueJS > Express JS
 
     > FastAPI                       -> Back-end
     > MySQL                         -> Database
