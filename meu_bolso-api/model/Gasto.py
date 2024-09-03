@@ -2,7 +2,7 @@
 from datetime import datetime
 from database_manager import DatabaseManager
 
-db = DatabaseManager("localhost", "yourusername", "yourpassword", "mydatabase")
+db = DatabaseManager("localhost", "db", "&b7Lq!Xy29D#Wj4N", "meubolso")
 
 class Gasto:
     def __init__(self, nome, valor, data=None):
