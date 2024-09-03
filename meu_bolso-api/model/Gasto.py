@@ -2,7 +2,7 @@
 from datetime import datetime
 from database_manager import DatabaseManager
 
-db = DatabaseManager("localhost", "db", "&b7Lq!Xy29D#Wj4N", "meubolso")
+db = DatabaseManager("localhost:8080", "db", "b7Lq!Xy29D#Wj4N", "meubolso")
 
 class Gasto:
     def __init__(self, nome, valor, data=None):
@@ -11,14 +11,6 @@ class Gasto:
         self.valor = valor
         self.data = data if data else datetime.now()
         self.grupos = []
-
-    def adicionar_grupo(self, grupo):
-        if grupo not in self.grupos:
-            self.grupos.append(grupo)
-
-    def remover_grupo(self, grupo):
-        if grupo in self.grupos:
-            self.grupos.remove(grupo)
 
     def salvar(self):
         db.connect()
