@@ -6,9 +6,10 @@ CREATE TABLE usuarios (
     email VARCHAR(200) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
     tipo_usuario INT NOT NULL, 
-    grupos INT NOT NULL 
+    qtd_grupos INT NOT NULL,
+    ativo BOOLEAN NOT NULL
+    -- SALDO ??? ??? ??? > atualizado com recorrencia no servidor
 );
-
 
 -- Tabela de Grupos (Natureza do gasto)
 -- cadastro previo: Alimentacao, transporte, lazer, educacao
@@ -23,6 +24,7 @@ CREATE TABLE gastos (
     nome VARCHAR(100) NOT NULL,
     valor FLOAT NOT NULL,
     data DATETIME DEFAULT CURRENT_TIMESTAMP
+    -- CADASTRO DE RECORRENCIA
 );
 
 -- Tabela de relacionamento entre Gastos e Grupos
@@ -43,12 +45,21 @@ CREATE TABLE usuario_grupo (
     FOREIGN KEY (id_grupo) REFERENCES grupos(id_grupo) ON DELETE CASCADE
 );
 
-INSERT INTO grupos (nome) VALUES ('Alimentação');
+CREATE TABLE log (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    registro TEXT NOT NULL,
+    data DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO grupos (nome) VALUES ('Alimentacao');
 INSERT INTO grupos (nome) VALUES ('Transporte');
-INSERT INTO grupos (nome) VALUES ('Educação');
+INSERT INTO grupos (nome) VALUES ('Educacao');
 INSERT INTO grupos (nome) VALUES ('Lazer');
 
 -- Índices para otimização de consultas
 CREATE INDEX idx_usuarios_email ON usuarios(email);
 CREATE INDEX idx_gastos_data ON gastos(data);
+
+
+
 
