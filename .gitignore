@@ -1,2 +1,4 @@
 /venv
 /arquitetura_meubolso.png
+/.env
+*.pyc
