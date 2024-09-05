@@ -1,6 +1,6 @@
 # gasto.py
 from datetime import datetime
-from database_manager import DatabaseManager
+from ..db.database_manager import DatabaseManager
 
 db = DatabaseManager("localhost:8080", "db", "b7Lq!Xy29D#Wj4N", "meubolso")
 
