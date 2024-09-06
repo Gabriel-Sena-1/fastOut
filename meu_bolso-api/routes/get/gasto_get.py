@@ -1,6 +1,8 @@
-import json
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+from model.Gasto import Gasto
 
 router = APIRouter()
 
@@ -8,17 +10,19 @@ class Request(BaseModel):
     id_grupo: int
     id_gasto: str
     
-@router.get("/grupo/{id_grupo}/gasto")
-def exibeTodosGastos()->json:
-    value = {}
-    #! faz uma chamada de select nos gastos
-    #! acumula e armazena em uma variável
-    return json.dumps(value)
+@router.get("")
+def exibe_todos_gastos()->JSONResponse:
+    gastos = Gasto.buscar_todos()
+    if not gastos:
+        raise HTTPException(status_code=404, detail="Nenhum gasto encontrado.")
+    return JSONResponse(content=[gasto.model_dump() for gasto in gastos])
 
-@router.get("/grupo/{id_grupo}/gasto/{id_gasto}")
-def exibeUmGasto()->json:
-    value = {}
-    #! faz uma chamada de select no gasto especifico
-    #! acumula e armazena em uma variável
-    return json.dumps(value)
+@router.get("/{id_grupo}")
+def exibe_gastos_por_grupo(id_grupo: int)->JSONResponse:
+    gastos = Gasto.buscar_por_grupo(id_grupo=id_grupo)
+    if not gastos:
+        raise HTTPException(status_code=404, detail="Nenhum gasto encontrado nesse grupo.")
+    return JSONResponse(content=[gasto.model_dump() for gasto in gastos])
+
+
 
