@@ -100,7 +100,7 @@ SELECT
     CASE 
         WHEN RAND() < 0.25 THEN 'Mercado'
         WHEN RAND() < 0.5 THEN 'Restaurante'
-        WHEN RAND() < 0.75 THEN 'Combustível'
+        WHEN RAND() < 0.75 THEN 'Combustivel'
         ELSE 'Cinema'
     END,
     ROUND(RAND() * 200 + 10, 2),
