@@ -1,16 +1,28 @@
-# gasto.py
 from datetime import datetime
-from ..db.database_manager import DatabaseManager
+from db.database_manager import DatabaseManager
+import os
+from pydantic import BaseModel, Field
 
-db = DatabaseManager("localhost:8080", "db", "b7Lq!Xy29D#Wj4N", "meubolso")
+host = str(os.getenv("DB_HOST"))
+db = DatabaseManager("db_container", os.getenv("DB_USER"), os.getenv("DB_PASSWORD"), os.getenv("DB_NAME"))
+
+class GastoBase(BaseModel):
+    nome: str
+    valor: float
+    data: datetime
+
+class GastoResponse(BaseModel):
+    id_gasto: int
+    nome: str
+    valor: float
+    data: str = Field(..., description="Data do gasto em formato ISO")
 
 class Gasto:
-    def __init__(self, nome, valor, data=None):
+    def __init__(self, nome: str, valor: float, data: str):
         self.id_gasto = None
         self.nome = nome
         self.valor = valor
-        self.data = data if data else datetime.now()
-        self.grupos = []
+        self.data = data
 
     def salvar(self):
         db.connect()
@@ -28,17 +40,23 @@ class Gasto:
         db.disconnect()
 
     @staticmethod
-    def buscar_por_id(id_gasto):
+    def buscar_por_id(id_gasto: int) -> GastoResponse:
         db.connect()
         sql = "SELECT * FROM gastos WHERE id_gasto = %s"
         val = (id_gasto,)
         db.execute(sql, val)
         result = db.fetchone()
         db.disconnect()
+
         if result:
-            gasto = Gasto(result[1], result[2], result[3])
-            gasto.id_gasto = result[0]
+            gasto = GastoResponse(
+                id_gasto=result[0],
+                nome=result[1],
+                valor=result[2],
+                data=result[3]
+            )
             return gasto
+
         return None
 
     @staticmethod
@@ -50,8 +68,12 @@ class Gasto:
         db.disconnect()
         gastos = []
         for result in results:
-            gasto = Gasto(result[1], result[2], result[3])
-            gasto.id_gasto = result[0]
+            gasto = GastoResponse(
+                id_gasto=result[0],
+                nome=result[1],
+                valor=result[2],
+                data=result[3].isoformat() if isinstance(result[3], datetime) else str(result[3])
+            )
             gastos.append(gasto)
         return gastos
 
@@ -74,10 +96,61 @@ class Gasto:
             db.disconnect()
             self.id_gasto = None
 
-# Exemplo de uso:
-# gasto = Gasto("Compras", 100.50)
-# gasto.salvar()
-# gasto_recuperado = Gasto.buscar_por_id(gasto.id_gasto)
-# gasto.valor = 120.00
-# gasto.atualizar()
-# gasto.deletar()
+    @staticmethod
+    def associar_grupo(id_gasto: int, id_grupo: int):
+        db.connect()
+        sql = "INSERT INTO gasto_grupo (id_gasto, id_grupo) VALUES (%s, %s)"
+        val = (id_gasto, id_grupo)
+        db.execute(sql, val)
+        db.commit()
+        db.disconnect()
+
+    @staticmethod
+    def remover_associacao_grupo(id_gasto: int, id_grupo: int):
+        db.connect()
+        sql = "DELETE FROM gasto_grupo WHERE id_gasto = %s AND id_grupo = %s"
+        val = (id_gasto, id_grupo)
+        db.execute(sql, val)
+        db.commit()
+        db.disconnect()
+
+    @staticmethod
+    def buscar_grupos_associados(id_gasto: int):
+        db.connect()
+        sql = """
+        SELECT g.id_grupo, g.nome
+        FROM grupos g
+        INNER JOIN gasto_grupo gg ON g.id_grupo = gg.id_grupo
+        WHERE gg.id_gasto = %s
+        """
+        val = (id_gasto,)
+        db.execute(sql, val)
+        results = db.fetchall()
+        db.disconnect()
+        grupos = [{"id_grupo": row[0], "nome": row[1]} for row in results]
+        return grupos
+    
+    @staticmethod
+    def buscar_por_grupo(id_grupo: int):
+        db.connect()
+        sql = """
+        SELECT g.id_gasto, g.nome, g.valor, g.data
+        FROM gastos g
+        INNER JOIN gasto_grupo gg ON g.id_gasto = gg.id_gasto
+        WHERE gg.id_grupo = %s
+        """
+        val = (id_grupo,)
+        db.execute(sql, val)
+        results = db.fetchall()
+        db.disconnect()
+        
+        gastos = []
+        for result in results:
+            gasto = GastoResponse(
+                id_gasto=result[0],
+                nome=result[1],
+                valor=result[2],
+                data=result[3].isoformat() if isinstance(result[3], datetime) else str(result[3])
+            )
+            gastos.append(gasto)
+        return gastos
