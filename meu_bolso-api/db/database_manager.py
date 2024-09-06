@@ -40,3 +40,10 @@ class DatabaseManager:
     @property
     def lastrowid(self):
         return self.cursor.lastrowid
+    
+    def rollback(self):
+        self.connection.rollback()
+
+    @property
+    def rowcount(self):
+        return self.cursor.rowcount
