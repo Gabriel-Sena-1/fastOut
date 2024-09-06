@@ -1,15 +1,12 @@
-import json
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
+from fastapi.responses import JSONResponse
+from model.User import User
 
 router = APIRouter()
 
-class Request(BaseModel):
-    user_id: int
-    
-@router.delete("/user/{user_id}")
-def deletaUser()->str:
-    value = {}
-    #! começa uma transaction com o banco e deleta o conteúdo
-    return json.dumps(value)
-
+@router.delete("/{id_user}")
+def deleta_usuario(id_user: int) -> JSONResponse:
+    deleta_usuario = User.deletar_usuario(id_user=id_user)
+    if not deleta_usuario:
+        raise HTTPException(status_code=404, detail="Houve um problema ao deletar o usuário.")
+    return JSONResponse(content={"message": "Sucesso ao deletar o usuário!"})
