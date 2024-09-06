@@ -104,7 +104,7 @@ class User:
     def deletar(self):
         if self.id_user is not None:
             db.connect()
-            sql = "DELETE FROM usuarios WHERE id_user = %s"
+            sql = "UPDATE usuarios SET ativo = 0 WHERE id_user = %s" #? Guarda o registro do usuário, a diferença é que ele n acessará o sistema mais
             val = (self.id_user,)
             db.execute(sql, val)
             db.commit()
