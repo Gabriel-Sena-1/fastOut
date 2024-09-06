@@ -101,12 +101,27 @@ class User:
             db.commit()
             db.disconnect()
 
-    def deletar(self):
-        if self.id_user is not None:
+    @staticmethod
+    def deletar_usuario(id_user: int):
+        if id_user is not None:
             db.connect()
-            sql = "UPDATE usuarios SET ativo = 0 WHERE id_user = %s" #? Guarda o registro do usuário, a diferença é que ele n acessará o sistema mais
-            val = (self.id_user,)
-            db.execute(sql, val)
-            db.commit()
-            db.disconnect()
-            self.id_user = None
+            sql = "UPDATE usuarios SET ativo = 0 WHERE id_user = %s"
+            val = (id_user,)
+            
+            try:
+                db.execute(sql, val)
+                db.commit()
+                
+                # Verifica quantas linhas foram afetadas
+                if db.rowcount > 0:
+                    return True  # A query foi bem-sucedida, pelo menos uma linha foi afetada
+                else:
+                    return False  # Nenhuma linha foi afetada (ID não encontrado, por exemplo)
+            except Exception as e:
+                db.rollback()  # Em caso de erro, desfaz a transação
+                print(f"Erro ao deletar usuário: {e}")
+                return False
+            finally:
+                db.disconnect()
+
+        
