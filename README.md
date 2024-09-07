@@ -6,11 +6,12 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
 
 # System Design
     > HTML, Tailwind CSS, JS        -> Front-end
-        > VueJS > Express JS
+        > VueJS > Express JS -> consumir api
 
     > FastAPI                       -> Back-end
     > MySQL                         -> Database
-    
+    > Docker
+
     > Libs:
         -> OAuth2 | Autenticação: para autenticar usuários do sistema;
         -> Passlib | Hash de senha: para armazenar senhas com segurança;
@@ -26,16 +27,27 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
         - sobrenome: varchar 100
         - email: varchar 200
         - senha: varchar 100
-        - tipo_usuario: int --? 1- usuario normal; 2- usuario premium; 3- admin;
-        - grupos: int --? controla a qtd de grupos de um unico usuario -> essa qtd vai ser validada pelo tipo daquele usuario
+        - tipo_usuario: int
+        - qtd_grupos: int
 ```
-- Grupo:
+- Grupos:
     - Descrição: Natureza do gasto, exemplo: contas, lazer, comida, festa...
 
 ``` 
     Campos:
         id_grupo: auto increment
         nome: varchar 100
+```
+- Gastos:
+    - Descrição: o gasto em específico, exemplo: conta de luz, festa x, lanche, tv...
+
+    - Regra: em gasto terá um controle de data registrado automaticamente ou preenchido pelo usuário.
+```
+    Campos:
+        id_gasto: auto increment
+        nome: varchar 100
+        valor: float
+        data: tempo atual da transação/data selecionada pelo user
 ```
 - Gasto_grupo:
 ```
@@ -44,22 +56,12 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
         id_gasto: vinculo
 ```
 
-```
-tabela usuario grupo -> limitar quantidade de grupos criáveis para 3-4 
-todas as tabelas -> colocar um status ativo para exclusões sem perca de dados
-```
+*Tarefas:*
+* *Status ativo nas tabelas para exclusões sem perca de dados. Atualmente apenas usuário conta com esse atributo.*
+* *Token de autenticação.*
+* *OAuth2 para guardar as senhas com segurança.*
+* *Chart.js para visualização de relatórios de gastos.*
 
-
-- Gasto:
-    - Descrição: o gasto em específico, exemplo: conta de luz, festa x, lanche, tv...
-
-    - Regra: em gasto terá um controle de data registrado automaticamente ou preenchido pelo usuário.
-```
-    Campos:
-        id_gasto: auto increment
-        nome: varchar 100
-        data: tempo atual da transação/data selecionada pelo user
-```
 
 # ROTAS
 
@@ -85,16 +87,19 @@ todas as tabelas -> colocar um status ativo para exclusões sem perca de dados
 
 ```
     Retorna todos os grupos
-        /grupo
+        /grupos
 
     Retorna um grupo
-        /grupo/{id_grupo}
+        /grupos/{id_grupo}
         
+    Retorna todos os gastos
+        /gastos
+
     Retorna todos os gastos de um grupo
-        /grupo/{id_grupo}/gasto
+        /gastos/{id_grupo}
 
     Retorna um gasto de um grupo
-        /grupo/{id_grupo}/gasto/{id_gasto}
+        /grupos/{id_grupo}/gasto/{id_gasto}
 
 ```
 
@@ -105,9 +110,9 @@ todas as tabelas -> colocar um status ativo para exclusões sem perca de dados
 ```
 ```
     Grupo:
-         /grupo/{grupo_id}
+         /grupos/{grupo_id}
         Gasto: 
-             /grupo/{grupo_id}/gasto/{gasto_id}
+             /grupos/{grupo_id}/gastos/{gasto_id}
 ```
 
  ### DELETE (DELETE)
@@ -117,10 +122,10 @@ todas as tabelas -> colocar um status ativo para exclusões sem perca de dados
 ```
 ```
     Grupo:
-         /grupo/{grupo_id}
+         /grupos/{grupo_id}
 
         Gasto:
-             /grupo/{grupo_id}/gasto/{gasto_id}
+             /grupos/{grupo_id}/gastos/{gasto_id}
 ```
 
 
