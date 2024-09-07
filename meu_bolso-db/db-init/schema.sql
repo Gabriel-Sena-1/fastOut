@@ -5,9 +5,9 @@ CREATE TABLE usuarios (
     sobrenome VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
-    tipo_usuario INT NOT NULL, 
-    qtd_grupos INT NOT NULL,
-    ativo BOOLEAN NOT NULL
+    tipo_usuario INT NOT NULL, -- controla quantos grupos o usuário será permitido criar / ativa o adm no sistema
+    qtd_grupos INT NOT NULL, -- controla a quantidade de grupos que um usuário cria e enxerga
+    ativo BOOLEAN NOT NULL -- desativa e ativa o usuário
     -- SALDO ??? ??? ??? > atualizado com recorrencia no servidor
 );
 
