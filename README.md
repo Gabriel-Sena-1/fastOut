@@ -1,3 +1,20 @@
+# Como rodar?
+O primeiro passo consiste em clonar o projeto do repositório remoto do Github para sua máquina. Para isso, basta usar o seguinte comando:
+```
+  git clone https://github.com/Gabriel-Sena-1/meu_bolso.git
+```
+Após isso, você deve navegar para o diretório em que o projeto está estruturado, usando o seguinte comando:
+```
+  cd meu_bolso
+  code .
+```
+Isso irá abrir o projeto direto no [VSCode](https://code.visualstudio.com/), se o mesmo estiver instalado na sua máquina, se não, você pode instalar clicando no link deste texto.
+Em seguida, para que o projeto funcione na sua máquina, basta você instalar o [Docker](https://docs.docker.com/engine/install/ubuntu/) e usar o seguinte comando:
+```
+  docker compose up --build
+```
+Isso irá instalar automaticamente o projeto e todas as dependências necessárias para seu funcionamento em três containeres separados. Após isso, acessando o endereço http://localhost:8000/docs em qualquer navegador da sua máquina, todos os endpoints da API estarão disponíveis para teste, pois o projeto já entra em funcionamento com um banco de dados feito para testes.
+
 # Escopo do projeto
 
 Uma aplicação para controle de gastos pessoais. Nessa aplicação você deve conseguir criar e gerenciar seus gastos pessoais. Podendo adicionar dispesas e suas naturezas. 
@@ -6,9 +23,10 @@ Plus: relatórios mensais em gráficos com base na natureza da despesa.
 
 # System Design
     > HTML, Tailwind CSS, JS        -> Front-end
-        > VueJS > Express JS -> consumir api
+        > VueJS 
+        > Express JS -> consumir api
 
-    > FastAPI                       -> Back-end
+    > Python + FastAPI                       -> Back-end
     > MySQL                         -> Database
     > Docker
 
