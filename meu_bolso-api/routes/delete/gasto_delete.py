@@ -1,8 +1,8 @@
 # routes/delete/gasto_delete.py
-import json
+
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from ...model.Gasto import Gasto
+from model.Gasto import Gasto
 
 router = APIRouter()
 
