@@ -46,7 +46,24 @@ class User:
         finally:
             db.disconnect()
 
-        
+    def editar(self):
+        db.connect()
+        try:
+            if self.id_user is not None:
+                sql = """UPDATE usuarios 
+                        SET nome = %s, sobrenome = %s, email = %s, senha = %s 
+                        WHERE id_user = %s"""
+                val = (self.nome, self.sobrenome, self.email, self.senha, self.id_user)
+                db.execute(sql, val)
+                db.commit()
+                return True  # Retorna sucesso na operação
+        except Exception as e:
+            db.rollback()  # Desfaz a transação em caso de erro
+            print(f"Erro ao atualizar o usuário: {e}")
+            return False  # Indica que ocorreu um erro
+        finally:
+            db.disconnect()
+
 
     @staticmethod
     def buscar_por_id(id_user: int) -> UserResponse:
