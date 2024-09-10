@@ -24,20 +24,37 @@ class Gasto:
         self.valor = valor
         self.data = data
 
-    def salvar(self):
+    def salvar_gasto(self, id_user: int, id_grupo: int):
         db.connect()
-        if self.id_gasto is None:
-            sql = "INSERT INTO gastos (nome, valor, data) VALUES (%s, %s, %s)"
-            val = (self.nome, self.valor, self.data)
+        try:
+            # Salvando o gasto
+            if self.id_gasto is None:
+                sql = "INSERT INTO gastos (nome, valor, data) VALUES (%s, %s, %s)"
+                val = (self.nome, self.valor, self.data)
+                db.execute(sql, val)
+                db.commit()
+                self.id_gasto = db.lastrowid  # Obtém o ID gerado para o gasto
+                print(f"Gasto salvo com ID: {self.id_gasto}")
+           
+            sql = "INSERT INTO gasto_grupo (id_gasto, id_grupo) VALUES (%s, %s)"
+            val = (self.id_gasto, id_grupo)
             db.execute(sql, val)
             db.commit()
-            self.id_gasto = db.lastrowid
-        else:
-            sql = "UPDATE gastos SET nome = %s, valor = %s, data = %s WHERE id_gasto = %s"
-            val = (self.nome, self.valor, self.data, self.id_gasto)
+
+            # Associando o usuário ao grupo
+            sql = "INSERT INTO usuario_grupo (id_user, id_grupo) VALUES (%s, %s) ON DUPLICATE KEY UPDATE id_user=id_user"
+            val = (id_user, id_grupo)
             db.execute(sql, val)
             db.commit()
-        db.disconnect()
+
+            return True  # Operação bem-sucedida
+        except Exception as e:
+            db.rollback()  # Desfaz a transação em caso de erro
+            print(f"Erro ao salvar o gasto: {e}")
+            return False  # Indica falha na operação
+        finally:
+            db.disconnect()
+
 
     @staticmethod
     def buscar_por_id(id_gasto: int) -> GastoResponse:
@@ -96,14 +113,8 @@ class Gasto:
             db.disconnect()
             self.id_gasto = None
 
-    @staticmethod
-    def associar_grupo(id_gasto: int, id_grupo: int):
-        db.connect()
-        sql = "INSERT INTO gasto_grupo (id_gasto, id_grupo) VALUES (%s, %s)"
-        val = (id_gasto, id_grupo)
-        db.execute(sql, val)
-        db.commit()
-        db.disconnect()
+   
+
 
     @staticmethod
     def remover_associacao_grupo(id_gasto: int, id_grupo: int):
