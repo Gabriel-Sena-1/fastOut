@@ -5,10 +5,10 @@ CREATE TABLE usuarios (
     sobrenome VARCHAR(100) NOT NULL,
     email VARCHAR(200) NOT NULL UNIQUE,
     senha VARCHAR(100) NOT NULL,
-    tipo_usuario INT NOT NULL, -- controla quantos grupos o usuário será permitido criar / ativa o adm no sistema
-    qtd_grupos INT NOT NULL, -- controla a quantidade de grupos que um usuário cria e enxerga
-    ativo BOOLEAN NOT NULL -- desativa e ativa o usuário
-    -- SALDO ??? ??? ??? > atualizado com recorrencia no servidor
+    tipo_usuario INT NOT NULL DEFAULT 1, -- tipo_usuario definido como 1 por padrão
+    qtd_grupos INT NOT NULL DEFAULT 3, -- qtd_grupos definido como 3 por padrão
+    ativo BOOLEAN NOT NULL DEFAULT TRUE -- ativo definido como TRUE por padrão
+    -- SALDO ??? ??? ??? > atualizado com recorrência no servidor
 );
 
 -- Tabela de Grupos (Natureza do gasto)
