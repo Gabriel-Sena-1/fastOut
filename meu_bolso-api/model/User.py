@@ -19,30 +19,34 @@ class UserResponse(UserBase):
     id_user: int
 
 class User:
-    def __init__(self, nome, sobrenome, email, senha, tipo_usuario, qtd_grupos, ativo=True):
+    def __init__(self, nome, sobrenome, email, senha):
         self.id_user = None
         self.nome = nome
         self.sobrenome = sobrenome
         self.email = email
         self.senha = senha
-        self.tipo_usuario = tipo_usuario
-        self.qtd_grupos = qtd_grupos
-        self.ativo = ativo
+
+
 
     def salvar(self):
         db.connect()
-        if self.id_user is None:
-            sql = "INSERT INTO usuarios (nome, sobrenome, email, senha, tipo_usuario, qtd_grupos, ativo) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-            val = (self.nome, self.sobrenome, self.email, self.senha, self.tipo_usuario, self.qtd_grupos, self.ativo)
-            db.execute(sql, val)
-            db.commit()
-            self.id_user = db.lastrowid
-        else:
-            sql = "UPDATE usuarios SET nome = %s, sobrenome = %s, email = %s, senha = %s, tipo_usuario = %s, qtd_grupos = %s, ativo = %s WHERE id_user = %s"
-            val = (self.nome, self.sobrenome, self.email, self.senha, self.tipo_usuario, self.qtd_grupos, self.ativo, self.id_user)
-            db.execute(sql, val)
-            db.commit()
-        db.disconnect()
+        try:
+            if self.id_user is None:
+                sql = """INSERT INTO usuarios (nome, sobrenome, email, senha) 
+                        VALUES (%s, %s, %s, %s)"""
+                val = (self.nome, self.sobrenome, self.email, self.senha)
+                db.execute(sql, val)
+                db.commit()
+                self.id_user = db.lastrowid  # Captura o ID gerado para o usuário
+                return True  # Retorna sucesso na operação
+        except Exception as e:
+            db.rollback()  # Desfaz a transação em caso de erro
+            print(f"Erro ao salvar o usuário: {e}")
+            return False  # Indica que ocorreu um erro
+        finally:
+            db.disconnect()
+
+        
 
     @staticmethod
     def buscar_por_id(id_user: int) -> UserResponse:
