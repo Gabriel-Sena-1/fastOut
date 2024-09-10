@@ -19,15 +19,15 @@ from routes.delete.grupo_delete import router as grupos_delete_router   # D
 # Inicialização do FastAPI
 app = FastAPI()
 
-app.include_router(user_post_router, prefix="/users", tags=["Users"])
-app.include_router(user_get_router, prefix="/users", tags=["Users"])
-app.include_router(user_put_router, prefix="/users", tags=["Users"])
-app.include_router(user_delete_router, prefix="/users", tags=["Users"])
+app.include_router(user_post_router, prefix="/user", tags=["User"])     #* OK
+app.include_router(user_get_router, prefix="/user", tags=["User"])      #* OK
+app.include_router(user_put_router, prefix="/user", tags=["User"])      #* OK
+app.include_router(user_delete_router, prefix="/user", tags=["User"])   #* OK
 
-app.include_router(gastos_post_router, prefix="/gastos", tags=["Gastos"]) 
-app.include_router(gastos_get_router, prefix="/gastos", tags=["Gastos"]) 
-app.include_router(gastos_put_router, prefix="/gastos", tags=["Gastos"]) 
-app.include_router(gastos_delete_router, prefix="/gastos", tags=["Gastos"]) 
+app.include_router(gastos_post_router, prefix="/gasto", tags=["Gasto"])   #* OK
+app.include_router(gastos_get_router, prefix="/gasto", tags=["Gasto"])    #* OK
+app.include_router(gastos_put_router, prefix="/gasto", tags=["Gasto"]) 
+app.include_router(gastos_delete_router, prefix="/gasto", tags=["Gasto"]) 
 
 app.include_router(grupos_post_router, prefix="/grupos", tags=["Grupos"]) 
 app.include_router(grupos_get_router, prefix="/grupos", tags=["Grupos"]) 
