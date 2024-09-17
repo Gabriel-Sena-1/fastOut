@@ -72,7 +72,7 @@ class Gasto:
                 id_gasto=result[0],
                 nome=result[1],
                 valor=result[2],
-                data=result[3]
+                data=result[3].isoformat() if isinstance(result[3], datetime) else result[3]
             )
             return gasto
 
@@ -180,3 +180,27 @@ class Gasto:
             )
             gastos.append(gasto)
         return gastos
+    
+    def editar(self) -> bool:
+        db.connect()
+
+        try:
+            # Atualizar o gasto no banco de dados
+            sql = """
+            UPDATE gastos 
+            SET nome = %s, valor = %s, data = %s 
+            WHERE id_gasto = %s
+            """
+            val = (self.nome, self.valor, self.data, self.id_gasto)
+            db.execute(sql, val)
+            db.commit()
+
+            return db.rowcount > 0
+        
+        except Exception as e:
+            db.rollback()
+            print(f"Erro ao editar o gasto: {e}")
+            return False
+
+        finally:
+            db.disconnect()
