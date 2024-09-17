@@ -47,6 +47,8 @@ class Gasto:
             db.execute(sql, val)
             db.commit()
 
+            
+
             return True  # Operação bem-sucedida
         except Exception as e:
             db.rollback()  # Desfaz a transação em caso de erro
@@ -103,15 +105,28 @@ class Gasto:
             db.commit()
             db.disconnect()
 
-    def deletar(self):
-        if self.id_gasto is not None:
-            db.connect()
+    @staticmethod
+    def deletar_gasto(id_gasto: int) -> bool:
+        db.connect()
+        try:
+            # Deletando o gasto da tabela principal
             sql = "DELETE FROM gastos WHERE id_gasto = %s"
-            val = (self.id_gasto,)
+            val = (id_gasto,)
             db.execute(sql, val)
             db.commit()
+
+            if db.rowcount == 0:
+                return False
+
+            return True
+        
+        except Exception as e:
+            db.rollback()
+            print(f"Erro ao deletar o gasto: {e}")
+            return False
+
+        finally:
             db.disconnect()
-            self.id_gasto = None
 
    
 
