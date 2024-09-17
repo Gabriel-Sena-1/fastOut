@@ -2,7 +2,6 @@ from datetime import datetime
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from model.Gasto import Gasto
-from model.User import User
 from pydantic import BaseModel
 
 router = APIRouter()
