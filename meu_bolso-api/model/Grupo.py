@@ -16,13 +16,21 @@ class Grupo:
         self.id_grupo = None
         self.nome = nome
 
-    def salvar(self):
+    @staticmethod
+    def salvar(self, id_user: int):
         db.connect()
         if self.id_grupo is None:
             sql = "INSERT INTO grupos (nome) VALUES (%s)"
             val = (self.nome,)
             db.execute(sql, val)
             db.commit()
+
+            # Incrementando o valor de qtd_grupos para o usuário específico
+            sql = "UPDATE usuarios SET qtd_grupos = qtd_grupos - %s WHERE id_user = %s"
+            val = (1, id_user)  # Incrementa em 1 para o usuário com id_user correspondente
+            db.execute(sql, val)
+            db.commit()
+
             self.id_grupo = db.lastrowid
         else:
             sql = "UPDATE grupos SET nome = %s WHERE id_grupo = %s"
