@@ -11,10 +11,10 @@ from routes.get.gasto_get import router as gastos_get_router            # R
 from routes.put.gasto_put import router as gastos_put_router            # U
 from routes.delete.gasto_delete import router as gastos_delete_router   # D
 
-from routes.post.grupo_post import router as grupos_post_router         # C
-from routes.get.grupo_get import router as grupos_get_router            # R
-from routes.put.grupo_put import router as grupos_put_router            # U
-from routes.delete.grupo_delete import router as grupos_delete_router   # D
+from routes.post.grupo_post import router as grupo_post_router         # C
+from routes.get.grupo_get import router as grupo_get_router            # R
+from routes.put.grupo_put import router as grupo_put_router            # U
+from routes.delete.grupo_delete import router as grupo_delete_router   # D
 
 # Inicialização do FastAPI
 app = FastAPI()
@@ -29,10 +29,10 @@ app.include_router(gastos_get_router, prefix="/gasto", tags=["Gasto"])    #* OK
 app.include_router(gastos_put_router, prefix="/gasto", tags=["Gasto"]) 
 app.include_router(gastos_delete_router, prefix="/gasto", tags=["Gasto"]) 
 
-app.include_router(grupos_post_router, prefix="/grupos", tags=["Grupos"]) 
-app.include_router(grupos_get_router, prefix="/grupos", tags=["Grupos"]) 
-app.include_router(grupos_put_router, prefix="/grupos", tags=["Grupos"]) 
-app.include_router(grupos_delete_router, prefix="/grupos", tags=["Grupos"]) 
+app.include_router(grupo_post_router, prefix="/grupo", tags=["Grupo"]) 
+app.include_router(grupo_get_router, prefix="/grupo", tags=["Grupo"]) 
+app.include_router(grupo_put_router, prefix="/grupo", tags=["Grupo"]) 
+app.include_router(grupo_delete_router, prefix="/grupo", tags=["Grupo"]) 
 
 if __name__ == "__main__":
     uvicorn.run(app, port=8000)
