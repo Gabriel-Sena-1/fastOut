@@ -1,6 +1,8 @@
-import json
+
 from fastapi import APIRouter, HTTPException
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
+from model.Grupo import Grupo
 
 router = APIRouter()
 
@@ -8,14 +10,14 @@ class Request(BaseModel):
     id_grupo: int
     
 @router.get("/grupo")
-def retornaTodosGrupos()->json:
+def retornaTodosGrupos()->JSONResponse:
     value = {}
     #TODO: acumula todos os grupos em value
-    return json.dumps(value) #? retorna os grupos em json
+    return JSONResponse(value) #? retorna os grupos em json
 
 @router.get("/grupo/{id_grupo}")
-def retornaUmGrupo()->json:
+def retornaUmGrupo()->JSONResponse:
     value = {}
     #TODO: acumula um grupo em value
-    return json.dumps(value) #? retorna os grupos em json
+    return JSONResponse(value) #? retorna os grupos em json
 

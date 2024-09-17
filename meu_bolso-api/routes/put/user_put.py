@@ -13,7 +13,7 @@ class UserUpdate(BaseModel):
     senha: str
 
 # Rota PUT que recebe o id_user na URL e os dados via corpo da requisição
-@router.put("/usuarios/{id_user}")
+@router.put("/{id_user}")
 def editar_usuario(id_user: int, user_data: UserUpdate):
     # Buscar o usuário existente pelo ID
     usuario_atual = User.buscar_por_id(id_user)
